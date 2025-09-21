@@ -1,1 +1,1 @@
-brew "stow"
+brew "boringconfigs/cli/boring.ide"

@@ -1,8 +1,6 @@
-.PHONY=all install configure
+.PHONY=all install
 
-all: install configure
+all: install
 
 install:
 	brew bundle
-configure:
-	stow . --target="${HOME}"

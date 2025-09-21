@@ -10,7 +10,7 @@ if [[ $# -gt 1 ]]; then
     echo "Too many arguments. See $(basename $0) --help.">&2
     exit 1
 elif [[ "$1" == "--help" || "$1" == "-h"  ]]; then
-    echo "Usage: $(basename $0) [path]">&2
+    echo "Usage: $(basename $0) [path]"
     echo
     echo "Arguments"
     echo "    path (optional) - Path to project root directory."

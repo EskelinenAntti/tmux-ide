@@ -5,13 +5,26 @@ is_git_repo() {
     [[ $(git -C "$dir" rev-parse --is-inside-work-tree 2>/dev/null) == "true" ]]
 }
 
+# Validate user input
+if [[ $# -gt 1 ]]; then
+    echo "Too many arguments. See $(basename $0) --help.">&2
+    exit 1
+elif [[ "$1" == "--help" || "$1" == "-h"  ]]; then
+    echo "Usage: $(basename $0) [path]">&2
+    echo
+    echo "Arguments"
+    echo "    path (optional) - Path to project root directory."
+    echo
+    exit 0
+elif [[ $# -eq 1 && ! -e "$1" ]]; then
+    echo "Received an invalid path: $1">&2
+    exit 1
+fi
+
 if [[ $# -eq 0 ]]; then
     selected_path=$PWD
-elif [[ -e "$1" ]]; then
-    selected_path=$(realpath $1)
 else
-    echo "Argument contained an invalid path">&2
-    exit 0
+    selected_path=$(realpath $1)
 fi
 
 if is_git_repo selected_path; then
@@ -32,12 +45,13 @@ if ! tmux has-session -t=$session 2> /dev/null; then
     if is_git_repo $selected_path; then
         tmux new-window -c $working_directory lazygit
     fi
+    tmux select-window -t $session:1
 
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach -t $session:1
+    tmux attach -t $session
 else
-    tmux switch-client -t $session:1
+    tmux switch-client -t $session
 fi
 

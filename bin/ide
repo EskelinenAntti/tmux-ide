@@ -46,7 +46,6 @@ if ! tmux has-session -t=$session 2> /dev/null; then
         tmux new-window -t $session -c $working_directory lazygit
     fi
     tmux select-window -t $session:1
-
 fi
 
 if [[ -z $TMUX ]]; then

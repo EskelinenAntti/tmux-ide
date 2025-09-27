@@ -28,7 +28,7 @@ else
 fi
 
 if is_git_repo $selected_path; then
-    working_directory=$(git rev-parse --show-toplevel)
+    working_directory=$(git -C $selected_path rev-parse --show-toplevel)
 elif [[ -d "$1" ]]; then
     working_directory=$selected_path
 else

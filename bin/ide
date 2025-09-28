@@ -59,7 +59,12 @@ if [ ! -z "$VISUAL" ]; then
 elif [ ! -z "$EDITOR" ]; then
     IDE_EDITOR="$EDITOR"
 else
-    echo $UNDEFINED_EDITOR_ERROR_OUTPUT >&2
+    echo "$UNDEFINED_EDITOR_ERROR_OUTPUT" >&2
+    exit 1
+fi
+
+if ! command -v tmux > /dev/null 2>&1; then
+    echo "$TMUX_NOT_INSTALLED_ERROR_OUTPUT" >&2
     exit 1
 fi
 

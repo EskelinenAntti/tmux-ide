@@ -22,7 +22,7 @@ brew install tmux"
 
 is_git_repo() {
     local DIR="$1"
-    test $(git -C "$DIR" rev-parse --is-inside-work-tree 2>/dev/null) = "true"
+    test "$(git -C "$DIR" rev-parse --is-inside-work-tree 2>/dev/null)" = "true"
 }
 
 # Validate user input

@@ -1,17 +1,32 @@
 #!/bin/bash
 
-
-is_git_repo() {
-    local dir="$1"
-    [[ $(git -C "$dir" rev-parse --is-inside-work-tree 2>/dev/null) == "true" ]]
-}
-
 HELP_OUTPUT=\
 "Usage: $(basename $0) [path]
 
 Arguments
     path (optional) - Path to project root directory.
 "
+
+UNDEFINED_EDITOR_ERROR_OUTPUT=\
+"No editor was configured. Specify the editor you would like to use by setting the \$EDITOR variable.
+
+For example, in order to use Vim as your editor, add following line to your ~/.zshrc:
+
+export EDITOR=vim
+"
+
+TMUX_NOT_INSTALLED_ERROR_OUTPUT=\
+"Did not find tmux, which is a required dependency for $(basename $0) command.
+
+You can install tmux e.g. via homebrew by running
+
+brew install tmux
+"
+
+is_git_repo() {
+    local dir="$1"
+    test $(git -C "$dir" rev-parse --is-inside-work-tree 2>/dev/null) = "true"
+}
 
 # Validate user input
 if [[ $# -gt 1 ]]; then

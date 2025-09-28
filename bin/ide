@@ -24,8 +24,8 @@ brew install tmux
 "
 
 is_git_repo() {
-    local dir="$1"
-    test $(git -C "$dir" rev-parse --is-inside-work-tree 2>/dev/null) = "true"
+    local DIR="$1"
+    test $(git -C "$DIR" rev-parse --is-inside-work-tree 2>/dev/null) = "true"
 }
 
 # Validate user input
@@ -41,21 +41,21 @@ elif [[ $# -eq 1 && ! -e "$1" ]]; then
 fi
 
 if [[ $# -eq 0 ]]; then
-    selected_path=$PWD
+    SELECTED_PATH=$PWD
 else
-    selected_path=$(realpath $1)
+    SELECTED_PATH=$(realpath $1)
 fi
 
-if is_git_repo $selected_path; then
-    working_directory=$(git -C $selected_path rev-parse --show-toplevel)
+if is_git_repo $SELECTED_PATH; then
+    WORKING_DIRECTORY=$(git -C $SELECTED_PATH rev-parse --show-toplevel)
 elif [[ -d "$1" ]]; then
-    working_directory=$selected_path
+    WORKING_DIRECTORY=$SELECTED_PATH
 else
-    working_directory=$(dirname $selected_path)
+    WORKING_DIRECTORY=$(dirname $SELECTED_PATH)
 fi
 
-selected_path_hash=$(sha256 <<< "$selected_path")
-session="$(basename $selected_path  | tr . _)-${selected_path_hash:0:4}"
+SELECTED_PATH_HASH=$(sha256 <<< "$SELECTED_PATH")
+SESSION="$(basename $SELECTED_PATH  | tr . _)-${SELECTED_PATH_HASH:0:4}"
 
 if [ ! -z "$VISUAL" ]; then
     IDE_EDITOR="$VISUAL"
@@ -66,19 +66,18 @@ else
     exit 1
 fi
 
-
-if ! tmux has-session -t=$session 2> /dev/null; then
-    tmux new-session -ds $session -c $working_directory "$IDE_EDITOR" "$selected_path"
+if ! tmux has-session -t=$SESSION 2> /dev/null; then
+    tmux new-session -ds $SESSION -c $WORKING_DIRECTORY "$IDE_EDITOR" "$SELECTED_PATH"
 
     # Start lazygit if installed and in git repo.
-    if is_git_repo $selected_path; command -v lazygit > /dev/null 2>&1; then
-        tmux new-window -d -t $session -c $working_directory lazygit
+    if is_git_repo $SELECTED_PATH; command -v lazygit > /dev/null 2>&1; then
+        tmux new-window -d -t $SESSION -c $WORKING_DIRECTORY lazygit
     fi
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach -t $session
+    tmux attach -t $SESSION
 else
-    tmux switch-client -t $session
+    tmux switch-client -t $SESSION
 fi
 

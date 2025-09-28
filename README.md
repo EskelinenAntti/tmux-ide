@@ -4,23 +4,29 @@ A script to manage tmux sessions for your projects.
 
 ## Overview
 
-`tmux-ide` is a simple shell script that streamlines your development workflow by creating and managing tmux sessions for your projects. It automatically creates a new tmux session for a given directory or attaches to an existing one.
+`tmux-ide` is a simple shell script for creating and managing tmux sessions for your projects.
+
+Run `ide [path_to_your_project_or_file]`, and the command either attaches you to an existing session or creates a new one if one didn't exist for the given path.
 
 ## Features
 
-- **Automatic Session Management:** Creates a new tmux session if one doesn't exist for the specified directory, or attaches to an existing session.
-- **Git Integration:** If the project is a git repository, it automatically opens a new window with `lazygit`.
-- **Workspace Awareness:** The tmux session is created in the root of the project directory, providing a clean and organized workspace.
-- **Helix Integration:** Opens the selected file or directory in Helix editor.
+- **Automatic Session Management:** Creates a new tmux session if one doesn't exist for the specified path, or attaches to an existing session.
+- **Git Integration:**
+  - If the given path is inside git repository, the tmux session is created automatically in the root of the project directory.
+  - If the project is a git repository and `lazygit` is installed, a new window with `lazygit` is automatically opened.
 
 ## Dependencies
 
+Psst: If configuring and installing all of these sounds scary, you can find preconfigured versions from [boringconfigs](https://github.com/boringconfigs/).
+
+### Required
 - [tmux](https://github.com/tmux/tmux)
 - [git](https://git-scm.com/)
-- [lazygit](https://github.com/jesseduffield/lazygit)
-- [Helix](https://helix-editor.com/)
 
-Psst: If configuring and installing all of these sounds scary, you can find preconfigured versions from [boringconfigs](https://github.com/boringconfigs/).
+### Optional but recommended
+- [lazygit](https://github.com/jesseduffield/lazygit) for easier and quicker git actions.
+- [Helix](https://helix-editor.com/) to be used as your text editor, aka `$EDITOR`.
+- [fzf](https://github.com/junegunn/fzf) for fuzzy finding folders.
 
 ## Usage
 

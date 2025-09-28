@@ -57,11 +57,21 @@ fi
 selected_path_hash=$(sha256 <<< "$selected_path")
 session="$(basename $selected_path  | tr . _)-${selected_path_hash:0:4}"
 
-if ! tmux has-session -t=$session 2> /dev/null; then
-    tmux new-session -ds $session -c $working_directory hx "$selected_path"
+if [ ! -z "$VISUAL" ]; then
+    IDE_EDITOR="$VISUAL"
+elif [ ! -z "$EDITOR" ]; then
+    IDE_EDITOR="$EDITOR"
+else
+    echo $UNDEFINED_EDITOR_ERROR_OUTPUT >&2
+    exit 1
+fi
 
-    # Start lazygit if in git repo.
-    if is_git_repo $selected_path; then
+
+if ! tmux has-session -t=$session 2> /dev/null; then
+    tmux new-session -ds $session -c $working_directory "$IDE_EDITOR" "$selected_path"
+
+    # Start lazygit if installed and in git repo.
+    if is_git_repo $selected_path; command -v lazygit > /dev/null 2>&1; then
         tmux new-window -d -t $session -c $working_directory lazygit
     fi
 fi

@@ -4,7 +4,7 @@ A script to manage tmux sessions for your projects.
 
 ## Overview
 
-`tmux-ide` is a simple shell script that streamlines your development workflow by creating and managing tmux sessions for your projects. It automatically creates a new tmux session for a given directory or attaches to an existing one, providing a consistent and efficient development environment.
+`tmux-ide` is a simple shell script that streamlines your development workflow by creating and managing tmux sessions for your projects. It automatically creates a new tmux session for a given directory or attaches to an existing one.
 
 ## Features
 
@@ -19,6 +19,8 @@ A script to manage tmux sessions for your projects.
 - [git](https://git-scm.com/)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [Helix](https://helix-editor.com/)
+
+Psst: If configuring and installing all of these sounds scary, you can find preconfigured versions from [boringconfigs](https://github.com/boringconfigs/).
 
 ## Usage
 

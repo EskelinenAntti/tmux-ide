@@ -43,16 +43,16 @@ else
     SELECTED_PATH=$(realpath $1)
 fi
 
-if is_git_repo $SELECTED_PATH; then
-    WORKING_DIRECTORY=$(git -C $SELECTED_PATH rev-parse --show-toplevel)
+if is_git_repo "$SELECTED_PATH"; then
+    WORKING_DIRECTORY=$(git -C "$SELECTED_PATH" rev-parse --show-toplevel)
 elif [[ -d "$1" ]]; then
-    WORKING_DIRECTORY=$SELECTED_PATH
+    WORKING_DIRECTORY="$SELECTED_PATH"
 else
-    WORKING_DIRECTORY=$(dirname $SELECTED_PATH)
+    WORKING_DIRECTORY=$(dirname "$SELECTED_PATH")
 fi
 
 SELECTED_PATH_HASH=$(sha256 <<< "$SELECTED_PATH")
-SESSION="$(basename $SELECTED_PATH  | tr . _)-${SELECTED_PATH_HASH:0:4}"
+SESSION="$(basename "$SELECTED_PATH"  | tr . _)-${SELECTED_PATH_HASH:0:4}"
 
 if [ ! -z "$VISUAL" ]; then
     IDE_EDITOR="$VISUAL"
@@ -72,7 +72,7 @@ if ! tmux has-session -t=$SESSION 2> /dev/null; then
     tmux new-session -ds $SESSION -c $WORKING_DIRECTORY "$IDE_EDITOR" "$SELECTED_PATH"
 
     # Start lazygit if installed and in git repo.
-    if is_git_repo $SELECTED_PATH && command -v lazygit > /dev/null 2>&1; then
+    if is_git_repo "$SELECTED_PATH" && command -v lazygit > /dev/null 2>&1; then
         tmux new-window -d -t $SESSION -c $WORKING_DIRECTORY lazygit
     fi
 fi

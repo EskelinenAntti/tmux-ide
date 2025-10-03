@@ -1,23 +1,20 @@
 # tmux-ide
 
-A script to manage tmux sessions for your projects.
+A command for managing tmux sessions for your projects.
 
-## Overview
+## What does it do?
 
-`tmux-ide` is a simple shell script for creating and managing tmux sessions for your projects.
+Run `ide path/to/my/project`, and you'll find yourself within a nicely named tmux session with your favourite editor and lazygit ready to go.
 
-Run `ide [path_to_your_project_or_file]`, and the command either attaches you to an existing session or creates a new one if one didn't exist for the given path.
+The session will be tied to the folder/file location itself. You can detach it, do other work, and return back right where you were by running `ide path/to/my/project` again.
 
-## Features
-
-- **Automatic Session Management:** Creates a new tmux session if one doesn't exist for the specified path, or attaches to an existing session.
-- **Git Integration:**
-  - If the given path is inside git repository, the tmux session is created automatically in the root of the project directory.
-  - If the project is a git repository and `lazygit` is installed, a new window with `lazygit` is automatically opened.
+Additional niceties:
+- You can freely use both relative and absolute paths as argument, as under the hood the session is always tied to the *absolute path* of the file/folder you provided.
+- If the file or folder you opened is within a git repository and `lazygit` is installed, a secondary window with `lazygit` is opened in the repository root.
 
 ## Dependencies
 
-Psst: If configuring and installing all of these sounds scary, you can find preconfigured versions from [boringconfigs](https://github.com/boringconfigs/).
+Psst: If configuring and installing all of these sounds like too much work, you can find preconfigured versions from [boringconfigs](https://github.com/boringconfigs/).
 
 ### Required
 - [tmux](https://github.com/tmux/tmux)
@@ -33,6 +30,13 @@ Psst: If configuring and installing all of these sounds scary, you can find prec
 ```bash
 ide [path]
 ```
+or, even better, if you have [fzf](https://github.com/junegunn/fzf) installed, you can do
+
+```bash
+ide **<tab>
+```
+
+and fuzzy find your way to whereever you want to go.
 
 ### Arguments
 

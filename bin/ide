@@ -3,7 +3,7 @@
 set -e
 
 HELP_OUTPUT=\
-"Usage: $(basename $0) [path]
+"Usage: $(basename "$0") [path]
 
 Arguments
     path (optional) - Path to project root directory."
@@ -15,7 +15,7 @@ For example, in order to use Vim as your editor, add following line to your ~/.z
 export EDITOR=vim"
 
 TMUX_NOT_INSTALLED_ERROR_OUTPUT=\
-"Did not find tmux, which is a required dependency for $(basename $0) command.
+"Did not find tmux, which is a required dependency for $(basename "$0") command.
 
 You can install tmux e.g. via homebrew by running
 brew install tmux"
@@ -27,7 +27,7 @@ is_git_repo() {
 
 # Validate user input
 if [[ $# -gt 1 ]]; then
-    echo "Too many arguments. See $(basename $0) --help.">&2
+    echo "Too many arguments. See $(basename "$0") --help.">&2
     exit 1
 elif [[ "$1" == "--help" || "$1" == "-h"  ]]; then
     echo "$HELP_OUTPUT"
@@ -40,7 +40,7 @@ fi
 if [[ $# -eq 0 ]]; then
     SELECTED_PATH=$PWD
 else
-    SELECTED_PATH=$(realpath $1)
+    SELECTED_PATH=$(realpath "$1")
 fi
 
 if is_git_repo "$SELECTED_PATH"; then
@@ -68,18 +68,18 @@ if ! command -v tmux > /dev/null 2>&1; then
     exit 1
 fi
 
-if ! tmux has-session -t=$SESSION 2> /dev/null; then
-    tmux new-session -ds $SESSION -c "$WORKING_DIRECTORY" "$IDE_EDITOR" "$SELECTED_PATH"
+if ! tmux has-session -t="$SESSION" 2> /dev/null; then
+    tmux new-session -ds "$SESSION" -c "$WORKING_DIRECTORY" "$IDE_EDITOR" "$SELECTED_PATH"
 
     # Start lazygit if installed and in git repo.
     if is_git_repo "$SELECTED_PATH" && command -v lazygit > /dev/null 2>&1; then
-        tmux new-window -d -t $SESSION -c "$WORKING_DIRECTORY" lazygit
+        tmux new-window -d -t "$SESSION" -c "$WORKING_DIRECTORY" lazygit
     fi
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach -t $SESSION
+    tmux attach -t "$SESSION"
 else
-    tmux switch-client -t $SESSION
+    tmux switch-client -t "$SESSION"
 fi
 
